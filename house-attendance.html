@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.compat.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="shortcut icon" href="./assets/favicon.png">
+    <title>House Attendance</title>
+</head>
+
+<body>
+    <header class="head">
+        <div id="topHeader">
+            <a href="mailto:info@tgif.net" class="fas fa-envelope"> <span> info@tgif.net </span></a>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+            <div class="container-fluid" id="menu">
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Congress 113
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="senate-data.html">Senate</a></li>
+                                <li><a class="dropdown-item" href="house-data.html">House</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Attendance
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="senate-attendance.html">Senate Attendance</a></li>
+                                <li><a class="dropdown-item" href="house-attendance.html">House Attendance</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Party Loyalty
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="senate-loyalty.html">Senate Loyalty</a></li>
+                                <li><a class="dropdown-item" href="house-loyalty.html">House Loyalty</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <img src="./assets/house.png" alt="logo-del-sitio" id="logoSite" class="animated pulse 1s">
+        <div id="red">
+            <h4 class="animated fadeInUp">Transparent Government Is Important!</h4>
+        </div>
+    </header>
+
+    <main id="table-house">
+        <div id="app">
+            <section class="table-pr">
+                <div  class="at-glance">
+                    <h1 class="animated fadeInLeft">House Attendance</h1>
+                    <p>The Constitution specifies that a majority of members constitutes a quorum to do business in each
+                        house. Representatives and senators rarely force the presence of a quorum by demanding quorum
+                        calls; thus, in most cases, debates continue even if a majority is not present.</p>
+                    <p>The Senate uses roll-call votes; a clerk calls out the names of all the senators, each senator
+                        stating "aye" or "no" when his or her name is announced. The House reserves roll-call votes for
+                        the most formal matters, as a roll-call of all 435 representatives takes quite some time;
+                        normally, members vote by electronic device. In the case of a tie, the motion in question fails.
+                        In the Senate, the Vice President may (if present) cast the tiebreaking vote.</p>
+                </div>
+                
+                <div>
+                    <h2>House at glance</h2>
+                    <table class="table table-striped" id="pr">
+                        <thead>
+                            <th>Party</th>
+                            <th>No. of Rep</th>
+                            <th>&percnt; Missed Votes (avg)</th>                            
+                        </thead>
+                        <tbody id="at-glance-attendance">
+                            <tr v-bind="statistics">
+                                <td>Democrats</td>
+                                <td>{{statistics.democrats }}</td>
+                                <td>{{statistics.avgMissedVotesPartyDemocrats}} %</td>
+                            </tr>
+                            <tr v-bind="statistics">
+                                <td>Republicanos</td>
+                                <td>{{statistics.republicans}}</td>
+                                <td>{{statistics.avgMissedVotesPartyRepublicans}} %</td>
+                            </tr>
+                            <tr v-bind="statistics">
+                                <td>Independents</td>
+                                <td>{{statistics.independents}}</td>
+                                <td v-if="isNaN(statistics.avgMissedVotesPartyIndependents)">0 %</td>
+                                <td v-else>{{statistics.avgMissedVotesPartyIndependents}} %</td>
+                            </tr>
+                            <tr v-bind="statistics">
+                                <td>Total</td>
+                                <td>{{(statistics.democrats + statistics.republicans + statistics.independents)}}</td> 
+                                <td v-if="isNaN(statistics.avgMissedVotesPartyIndependents)">{{((statistics.avgMissedVotesPartyDemocrats+ statistics.avgMissedVotesPartyRepublicans)/2)}} %</td>
+                                <td v-else>{{((statistics.avgMissedVotesPartyDemocrats+ statistics.avgMissedVotesPartyRepublicans + statistics.avgMissedVotesPartyIndependents)/3)}} %</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="tabla">
+                <div>
+                    <h2>Least Engaged (Bottom 10% Attendance)</h2>
+                    <table id="table1" class="table table-striped">
+                        <thead>
+                            <th>Fullname</th>
+                            <th>No. Missed Votes</th>
+                            <th>&percnt; Missed Votes </th>                            
+                        </thead>
+                        <tbody id="least-engaged" class="house-loyalty">
+                            <tr v-for="member in statistics.leastEngaged">
+                                <td><a v-bind:href="member.url"> {{member.last_name}}, {{member.first_name}}
+                                        {{member.middle_name}}</a></td>
+                                <td>{{member.missed_votes}}</td>
+                                <td>{{member.missed_votes_pct}} %</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <h2>Most Engaged (Bottom 10% Attendance)</h2>
+                    <table id="table2" class="table table-striped">
+                        <thead>
+                            <th>Fullname</th>
+                            <th>No. Missed Votes</th>
+                            <th>&percnt; Missed Votes</th>
+                            
+                        </thead>
+                        <tbody id="most-engaged" class="house-loyalty">
+                            <tr v-for="member in statistics.mostEngaged">
+                                <td><a v-bind:href="member.url"> {{member.last_name}}, {{member.first_name}}
+                                        {{member.middle_name}}</a></td>
+                                <td>{{member.missed_votes}}</td>
+                                <td>{{member.missed_votes_pct}} %</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <span class="copyright">© 2016 TGIF | </span>
+        <span class="rights"> All Rights Reserved</span>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script src="./scripts/main.js"></script>
+</body>
+
+</html>
